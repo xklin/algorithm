@@ -9,26 +9,19 @@
 
 #ifdef	__FIND_KTH_SMALLEST_NUMBER__
 
-#define FILENAME	"fksn.txt"
 
-
-void build_array (int elem_num)
+void build_array (int elem_num, int A[])
 {
-	FILE *stream ;
 	int elem ;
 	struct timeval tv ;
-	stream = fopen (FILENAME, "a") ;
-	if (NULL == stream)
-		exit (1) ;
+	int n ;
 
 	gettimeofday (&tv, NULL) ;
 	srand (tv.tv_usec) ;
-	for (elem=rand()%50; elem_num>0; --elem_num) {
-		fprintf (stream, "%d ", elem) ;
+	for (elem=rand()%50, n=0; n<elem_num; ++n) {
+		A[n] = elem ;
 		elem += rand () % 200 ;
 	}
-
-	fclose (stream) ;
 }
 
 
@@ -41,33 +34,20 @@ int main (int argc, char *argv[])
 
 	len_a = atoi (argv[1]) ;
 	len_b = atoi (argv[2]) ;
-	build_array (len_a) ;
-	usleep (1234567) ;
-	build_array (len_b) ;
-
-	stream = fopen (FILENAME, "r+") ;
-	if (NULL == stream)
-		exit (1) ;
 
 	// Read the first array
 	if (0 > len_a)
 		exit (1) ;
 	A = malloc (4*len_a) ;
 	printf ("[Array A]\nLength :\t%d\nElements :\t", len_a) ;
-	for (n=0; n<len_a; ++n) {
-		fscanf (stream, "%d", &A[n]) ;
-		printf ("%d ", A[n]) ;
-	}
+	build_array (len_a, A) ;
 
 	// Read the second array
 	if (0 > len_b)
 		exit (1) ;
 	B = malloc (4*len_b) ;
 	printf ("\n[Array B]\nLength :\t%d\nElements :\t", len_b) ;
-	for (n=0; n<len_b; ++n) {
-		fscanf (stream, "%d", &B[n]) ;
-		printf ("%d ", B[n]) ;
-	}
+	build_array (len_b, B) ;
 
 	printf ("\nEnter the index\n") ;
 	scanf ("%d", &k) ;
